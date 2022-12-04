@@ -1,9 +1,9 @@
 package main
 
 import (
+	"diceBot/controllers"
+	"diceBot/core"
 	"log"
-	"src/controllers"
-	"src/core"
 
 	telegram "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )

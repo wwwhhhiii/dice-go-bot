@@ -1,4 +1,4 @@
-module src
+module diceBot
 
 go 1.19
 
