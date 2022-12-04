@@ -36,11 +36,8 @@ func main() {
 		}
 
 		msg := telegram.NewMessage(update.Message.Chat.ID, result)
-
 		if _, err := bot.Send(msg); err != nil {
 			log.Print(err)
 		}
 	}
-
-	log.Print("Bot is down")
 }
