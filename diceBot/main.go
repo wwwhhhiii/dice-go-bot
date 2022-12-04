@@ -11,7 +11,7 @@ import (
 func main() {
 	settings := *core.NewSettings()
 	bot, updates := core.Startup(settings)
-	commands_map := make(map[string]func(bot telegram.BotAPI, update telegram.Update) string)
+	commandsMap := make(map[string]func(bot telegram.BotAPI, update telegram.Update) string)
 
 	log.Print("Bot is up")
 
@@ -20,24 +20,27 @@ func main() {
 			continue
 		}
 
+		// Handle only commands
 		if !update.Message.IsCommand() {
 			continue
 		}
 
 		// map commands to corresponding controllers
-		commands_map["help"] = controllers.Help
-		commands_map["roll"] = controllers.Roll_random_up_to
+		commandsMap["help"] = controllers.Help
+		commandsMap["roll"] = controllers.RollRandom
 
-		// Execute command
-		result := commands_map[update.Message.Command()](bot, update)
+		// Execute command if present in map and send message if any
+		if _, isPresent := commandsMap[update.Message.Command()]; isPresent {
+			result := commandsMap[update.Message.Command()](bot, update)
 
-		if result == "" {
-			continue
-		}
+			if result == "" {
+				continue
+			}
 
-		msg := telegram.NewMessage(update.Message.Chat.ID, result)
-		if _, err := bot.Send(msg); err != nil {
-			log.Print(err)
+			msg := telegram.NewMessage(update.Message.Chat.ID, result)
+			if _, err := bot.Send(msg); err != nil {
+				log.Print(err)
+			}
 		}
 	}
 }
