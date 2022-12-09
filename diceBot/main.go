@@ -38,6 +38,7 @@ func main() {
 			}
 
 			msg := telegram.NewMessage(update.Message.Chat.ID, result)
+			msg.ReplyToMessageID = update.Message.MessageID
 			if _, err := bot.Send(msg); err != nil {
 				log.Print(err)
 			}
