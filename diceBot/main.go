@@ -12,7 +12,9 @@ func main() {
 	settings := *core.NewSettings()
 	bot, updates := core.Startup(settings)
 	commandsMap := make(map[string]func(bot telegram.BotAPI, update telegram.Update) string)
-
+        // map commands to corresponding controllers
+        commandsMap["help"] = controllers.Help
+        commandsMap["roll"] = controllers.RollRandom
 	log.Print("Bot is up")
 
 	for update := range updates {
@@ -24,10 +26,6 @@ func main() {
 		if !update.Message.IsCommand() {
 			continue
 		}
-
-		// map commands to corresponding controllers
-		commandsMap["help"] = controllers.Help
-		commandsMap["roll"] = controllers.RollRandom
 
 		// Execute command if present in map and send message if any
 		if _, isPresent := commandsMap[update.Message.Command()]; isPresent {
